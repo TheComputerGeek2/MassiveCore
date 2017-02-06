@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import com.massivecraft.massivecore.engine.EngineMassiveCoreHostility;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.inventory.Inventory;
@@ -318,6 +319,7 @@ public class MassiveCore extends MassivePlugin
 			EngineMassiveCoreVariable.class,
 			EngineMassiveCoreWorldNameSet.class,
 			EngineMassiveCoreSponsor.class,
+			EngineMassiveCoreHostility.class,
 			
 			// Util
 			PlayerUtil.class,

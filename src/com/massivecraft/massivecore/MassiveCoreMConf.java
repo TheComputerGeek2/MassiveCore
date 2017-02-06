@@ -171,4 +171,45 @@ public class MassiveCoreMConf extends Entity<MassiveCoreMConf>
 	public Map<String, Integer> lorePrioritiesPrefix = new MassiveMap<>();
 	public Map<String, Integer> lorePrioritiesRegex = new MassiveMap<>();
 
+	// -------------------------------------------- //
+	// HOSTILITY DEFAULTS
+	// -------------------------------------------- //
+	
+	public Map<String, Hostility> entityHostilityDefaults = new MassiveMap<>(
+		"BAT", Hostility.PASSIVE,
+		"BLAZE", Hostility.HOSTILE,
+		"CAVE_SPIDER", Hostility.HOSTILE,
+		"CREEPER", Hostility.HOSTILE,
+		"COW", Hostility.PASSIVE,
+		"CHICKEN", Hostility.PASSIVE,
+		"ENDERMITE", Hostility.HOSTILE,
+		"ENDERMAN", Hostility.HOSTILE,
+		"ENDER_DRAGON", Hostility.HOSTILE,
+		"GUARDIAN", Hostility.HOSTILE,
+		"GIANT", Hostility.HOSTILE,
+		"GHAST", Hostility.HOSTILE,
+		"HORSE", Hostility.PASSIVE,
+		"IRON_GOLEM", Hostility.NEUTRAL,
+		"MUSHROOM_COW", Hostility.PASSIVE,
+		"MAGMA_CUBE", Hostility.HOSTILE,
+		"OCELOT", Hostility.PASSIVE,
+		"POLAR_BEAR", Hostility.HOSTILE,
+		"PIG_ZOMBIE", Hostility.HOSTILE,
+		"PIG", Hostility.PASSIVE,
+		"RABBIT", Hostility.PASSIVE,
+		"SQUID", Hostility.PASSIVE,
+		"SPIDER", Hostility.HOSTILE,
+		"SNOWMAN", Hostility.PASSIVE,
+		"SLIME", Hostility.HOSTILE,
+		"SHEEP", Hostility.PASSIVE,
+		"SHULKER", Hostility.HOSTILE,
+		"SILVERFISH", Hostility.HOSTILE,
+		"SKELETON", Hostility.HOSTILE,
+		"VILLAGER", Hostility.PASSIVE,
+		"WOLF", Hostility.NEUTRAL,
+		"WITHER", Hostility.HOSTILE,
+		"WITCH", Hostility.HOSTILE,
+		"ZOMBIE", Hostility.HOSTILE
+	);
+	
 }
