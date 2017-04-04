@@ -40,6 +40,8 @@ import com.massivecraft.massivecore.command.type.enumeration.TypeSound;
 import com.massivecraft.massivecore.command.type.enumeration.TypeSpawnReason;
 import com.massivecraft.massivecore.command.type.enumeration.TypeVillagerProfession;
 import com.massivecraft.massivecore.command.type.enumeration.TypeWorldType;
+import com.massivecraft.massivecore.command.type.factory.FactoryType;
+import com.massivecraft.massivecore.command.type.factory.FactoryTypeEnum;
 import com.massivecraft.massivecore.command.type.primitive.TypeBooleanTrue;
 import com.massivecraft.massivecore.command.type.primitive.TypeByte;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
@@ -66,6 +68,7 @@ public class RegistryType
 	// -------------------------------------------- //
 	
 	private static final Map<Class<?>, Type<?>> registry = new MassiveMap<>();
+	private static final List<FactoryType> factoriesClass = new MassiveList<>();
 	
 	public static <T> void register(Class<T> clazz, Type<? super T> type)
 	{
@@ -91,6 +94,12 @@ public class RegistryType
 	{
 		if (clazz == null) throw new NullPointerException("clazz");
 		return registry.containsKey(clazz);
+	}
+	
+	public static void registerFactory(FactoryType factory)
+	{
+		if (factory == null) throw new NullPointerException("factory");
+		factoriesClass.add(factory);
 	}
 	
 	// -------------------------------------------- //
@@ -169,6 +178,27 @@ public class RegistryType
 			if (fieldType instanceof Class)
 			{
 				Type<?> type = registry.get(fieldType);
+				Class<?> castedFieldType = (Class<?>) fieldType;
+				if (type == null)
+				{
+					for (FactoryType factory: factoriesClass)
+					{
+						// If this factory can generate a type for castedFieldType
+						if (!factory.isApplicable(castedFieldType)) continue;
+						
+						// Generate a new type definition
+						Type<?> newType = factory.createType(castedFieldType);
+						
+						// Sanity check
+						if (newType == null) throw new AssertionError(String.format("FactoryType %s returned null when processing %s", factory.getClass().getSimpleName(), castedFieldType));
+						
+						// Register
+						register(castedFieldType, (Type)newType);
+						type = newType;
+						break;
+					}
+				}
+				
 				if (strictThrow && type == null) throw new IllegalStateException(fieldType + " is not registered.");
 				return type;
 			}
@@ -280,6 +310,9 @@ public class RegistryType
 	
 	public static void registerAll()
 	{
+		// Start by registering the factories so they are accessible
+		registerFactory(FactoryTypeEnum.get());
+		
 		// Primitive
 		register(Boolean.TYPE, TypeBooleanTrue.get());
 		register(Boolean.class, TypeBooleanTrue.get());
