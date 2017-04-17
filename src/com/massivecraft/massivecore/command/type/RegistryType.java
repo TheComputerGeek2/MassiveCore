@@ -2,6 +2,7 @@ package com.massivecraft.massivecore.command.type;
 
 import com.massivecraft.massivecore.collections.BackstringSet;
 import com.massivecraft.massivecore.collections.ExceptionSet;
+import com.massivecraft.massivecore.collections.ExceptionSetCollection;
 import com.massivecraft.massivecore.collections.MassiveList;
 import com.massivecraft.massivecore.collections.MassiveMap;
 import com.massivecraft.massivecore.collections.WorldExceptionSet;
@@ -14,6 +15,7 @@ import com.massivecraft.massivecore.command.type.combined.TypePotionEffectWrap;
 import com.massivecraft.massivecore.command.type.combined.TypeSoundEffect;
 import com.massivecraft.massivecore.command.type.container.TypeBackstringSet;
 import com.massivecraft.massivecore.command.type.container.TypeExceptionSet;
+import com.massivecraft.massivecore.command.type.container.TypeExceptionSetCollection;
 import com.massivecraft.massivecore.command.type.container.TypeList;
 import com.massivecraft.massivecore.command.type.container.TypeMap;
 import com.massivecraft.massivecore.command.type.container.TypeSet;
@@ -55,6 +57,7 @@ import com.massivecraft.massivecore.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -107,8 +110,7 @@ public class RegistryType
 				if (annotationType != null)
 				{
 					Class<?> typeClass = annotationType.value();
-					Type<?> type = ReflectionUtil.getSingletonInstance(typeClass);
-					return type;
+					return ReflectionUtil.getSingletonInstance(typeClass);
 				}
 			}
 			catch (Throwable t)
@@ -127,10 +129,18 @@ public class RegistryType
 		
 		if (fieldType != null)
 		{
+			// FIXME make sure this can resolve classes that extend a generic parent
+			// FIXME make a registry of the raw types that may be handled here so we can see if we need to check the parent's parameters
 			if (fieldType instanceof ParameterizedType)
 			{
 				Class<?> fieldClass = field == null ? null : field.getType();
 				List<Type<?>> innerTypes;
+					
+				if (ReflectionUtil.isRawTypeAssignableFromAny(ExceptionSetCollection.class, fieldType, fieldClass))
+				{
+					innerTypes = getInnerTypes(field, fieldType, 1);
+					return TypeExceptionSetCollection.get((Type<? extends Collection>)innerTypes.get(0));
+				}
 				
 				if (ReflectionUtil.isRawTypeAssignableFromAny(BackstringSet.class, fieldType, fieldClass))
 				{

@@ -7,7 +7,6 @@ import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.ps.PSBuilder;
 import com.massivecraft.massivecore.ps.PSFormatDesc;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -15,6 +14,7 @@ import org.bukkit.entity.Entity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 public class TypePS extends TypeAbstract<PS>
 {

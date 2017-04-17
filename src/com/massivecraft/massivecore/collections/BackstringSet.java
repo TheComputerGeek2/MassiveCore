@@ -186,5 +186,18 @@ public class BackstringSet<T> extends AbstractSet<T>
 	{
 		this.stringSet.clear();
 	}
+	
+	// -------------------------------------------- //
+	// CONVENIENCE
+	// -------------------------------------------- //
+	
+	public void addAll(Iterable<T> objects)
+	{
+		if (objects == null) return;
+		for (T object : objects)
+		{
+			this.add(object);
+		}
+	}
 
 }

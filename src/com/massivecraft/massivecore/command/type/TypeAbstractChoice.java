@@ -10,7 +10,6 @@ import com.massivecraft.massivecore.comparator.ComparatorCaseInsensitive;
 import com.massivecraft.massivecore.mson.Mson;
 import com.massivecraft.massivecore.util.ReflectionUtil;
 import com.massivecraft.massivecore.util.Txt;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -21,6 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.apache.commons.lang.StringUtils;
 
 public abstract class TypeAbstractChoice<T> extends TypeAbstract<T> implements AllAble<T>
 {

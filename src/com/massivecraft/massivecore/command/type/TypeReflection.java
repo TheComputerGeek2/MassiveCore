@@ -9,10 +9,16 @@ public class TypeReflection<T> extends TypeAbstractChoice<T>
 	// -------------------------------------------- //
 	
 	public static <T> TypeReflection<T> get(Class<T> clazz) { return new TypeReflection<>(clazz); }
+	
 	public TypeReflection(Class<T> clazz)
 	{
+		this(clazz, (String)null);
+	}
+	
+	public TypeReflection(Class<T> clazz, String... toExclude)
+	{
 		super(clazz);
-		this.setInnerProperties(clazz);
+		this.setInnerProperties(clazz, toExclude);
 	}
 	
 	// -------------------------------------------- //

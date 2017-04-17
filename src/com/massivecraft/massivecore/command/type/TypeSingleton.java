@@ -1,6 +1,6 @@
 package com.massivecraft.massivecore.command.type;
 
-public class TypeSingleton<T> extends TypeReflection<T> 
+public class TypeSingleton<T> extends TypeReflection<T>
 {
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT

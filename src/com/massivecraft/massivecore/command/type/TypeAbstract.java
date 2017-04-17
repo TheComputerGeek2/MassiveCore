@@ -154,7 +154,8 @@ public abstract class TypeAbstract<T> implements Type<T>
 	public <I extends Property<T, ?>> void setInnerProperties(Collection<I> innerProperties) { this.innerProperties = new MassiveList<Property<T, ?>>(innerProperties); }
 	@SafeVarargs
 	public final <I extends Property<T, ?>> void setInnerProperties(I... innerProperties) { this.setInnerProperties(Arrays.asList(innerProperties)); }
-	public void setInnerProperties(Class<T> clazz) { this.setInnerProperties(PropertyReflection.getAll(clazz, this)); }
+	public void setInnerProperties(Class<T> clazz) { this.setInnerProperties(clazz, (String)null); }
+	public void setInnerProperties(Class<T> clazz, String... toExclude) { this.setInnerProperties(PropertyReflection.getAll(clazz, this, toExclude)); }
 	
 	// -------------------------------------------- //
 	// WRITE SHOW

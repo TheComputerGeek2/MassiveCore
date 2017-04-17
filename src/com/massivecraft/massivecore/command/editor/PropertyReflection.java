@@ -1,6 +1,7 @@
 package com.massivecraft.massivecore.command.editor;
 
 import com.massivecraft.massivecore.collections.MassiveList;
+import com.massivecraft.massivecore.collections.MassiveSet;
 import com.massivecraft.massivecore.command.editor.annotation.EditorEditable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorInheritable;
 import com.massivecraft.massivecore.command.editor.annotation.EditorMethods;
@@ -22,6 +23,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 
 public class PropertyReflection<O, V> extends Property<O, V>
@@ -101,12 +103,34 @@ public class PropertyReflection<O, V> extends Property<O, V>
 	
 	public static <O> List<PropertyReflection<O, ?>> getAll(Class<O> clazz, Type<O> typeObject)
 	{
-		List<PropertyReflection<O, ?>> ret = new MassiveList<>();
-		
+		return getAll(clazz, typeObject, (String)null);
+	}
+	
+	public static <O> List<PropertyReflection<O, ?>> getAll(Class<O> clazz, Type<O> typeObject, String... excludedFields)
+	{
 		// TODO: What about super classes?
 		// TODO: While we not often use super classes they could in theory also be meant to be editable.
 		// TODO: Something to consider coding in for the future.
-		for (Field field : clazz.getDeclaredFields())
+		
+		MassiveSet<String> excludedFieldNames = new MassiveSet<>(Arrays.asList(excludedFields));
+		
+		// Get the fields
+		MassiveSet<Field> fields = new MassiveSet<>();
+		
+		for (Field field: clazz.getDeclaredFields())
+		{
+			if (excludedFieldNames.contains(field.getName())) continue;
+			fields.add(field);
+		}
+		
+		return getAll(fields, typeObject);
+	}
+	
+	public static <O> List<PropertyReflection<O, ?>> getAll(Iterable<Field> fields, Type<O> typeObject)
+	{
+		List<PropertyReflection<O, ?>> ret = new MassiveList<>();
+		
+		for (Field field : fields)
 		{
 			if ( ! isVisible(field)) continue;
 			
