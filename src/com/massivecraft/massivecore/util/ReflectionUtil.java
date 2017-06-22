@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -50,42 +51,22 @@ public class ReflectionUtil
 	// MAKE ACCESSIBLE
 	// -------------------------------------------- //
 	
-	public static void makeAccessible(Field field)
+	public static void makeAccessible(AccessibleObject accessibleObject)
 	{
 		try
 		{
 			// Mark as accessible using reflection.
-			field.setAccessible(true);
+			accessibleObject.setAccessible(true);
 			
-			// Remove the final modifier from the field.
-			// http://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing
-			FIELD_DOT_MODIFIERS.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-		}
-		catch (Exception e)
-		{
-			throw asRuntimeException(e);
-		}
-	}
-	
-	public static void makeAccessible(Method method)
-	{
-		try
-		{
-			// Mark as accessible using reflection.
-			method.setAccessible(true);
-		}
-		catch (Exception e)
-		{
-			throw asRuntimeException(e);
-		}
-	}
-	
-	public static void makeAccessible(Constructor<?> constructor)
-	{
-		try
-		{
-			// Mark as accessible using reflection.
-			constructor.setAccessible(true);
+			// Additionally, if it is a field...
+			if (accessibleObject instanceof Field)
+			{
+				Field field = (Field) accessibleObject;
+				
+				// Remove the final modifier from the field.
+				// http://stackoverflow.com/questions/2474017/using-reflection-to-change-static-final-file-separatorchar-for-unit-testing
+				FIELD_DOT_MODIFIERS.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			}
 		}
 		catch (Exception e)
 		{
